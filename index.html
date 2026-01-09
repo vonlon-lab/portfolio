@@ -3,23 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal Portfolio</title>
+    <title>portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrambleTextPlugin.min.js"></script>
 </head>
 <body>
-    <div class="terminal">
-        <div class="terminal-header">
-            <div class="terminal-buttons">
-                <span class="button close"></span>
-                <span class="button minimize"></span>
-                <span class="button maximize"></span>
+    <canvas id="stars"></canvas>
+    <div class="container">
+        <section id="about" class="section">
+            <h1 class="fade-in">about me</h1>
+            <p class="fade-in">i am a software engineer passionate about creating clean, efficient code. with experience in various technologies, i focus on building user-centric applications.</p>
+        </section>
+        <section id="projects" class="section">
+            <h1 class="fade-in">projects</h1>
+            <div class="project">
+                <h2 class="fade-in">project one</h2>
+                <p class="fade-in">a brief description of the first project. technologies used: html, css, js.</p>
             </div>
-            <div class="terminal-title">wowori@portfolio: ~</div>
-        </div>
-        <div class="terminal-body">
-            <div id="output"></div>
-            <input type="file" id="image-upload" accept="image/*" style="display: none;">
-        </div>
+            <div class="project">
+                <h2 class="fade-in">project two</h2>
+                <p class="fade-in">a brief description of the second project. technologies used: react, node.js.</p>
+            </div>
+        </section>
+        <section id="contact" class="section">
+            <h1 class="fade-in">contact</h1>
+            <p class="fade-in">feel free to reach out via email at <a href="mailto:example@email.com">example@email.com</a> or connect on linkedin.</p>
+        </section>
     </div>
     <script src="script.js"></script>
 </body>

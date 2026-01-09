@@ -1,151 +1,82 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #000;
-    font-family: 'Courier New', monospace;
-    color: #ff008c;
-    overflow: hidden;
+    background: #000;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: hidden;
+    line-height: 1.6;
+    scroll-snap-type: y mandatory;
 }
 
-.terminal {
-    width: 100vw;
-    height: 100vh;
-    background-color: #000;
-    border: 2px solid #333;
+#stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+.section {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-.terminal-header {
-    background-color: #333;
-    padding: 5px 10px;
-    display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-}
-
-.terminal-buttons {
-    display: flex;
-    gap: 5px;
-}
-
-.button {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.close {
-    background-color: #ff5f57;
-}
-
-.minimize {
-    background-color: #ffbd2e;
-}
-
-.maximize {
-    background-color: #28ca42;
-}
-
-.terminal-title {
-    color: #fff;
-    font-size: 14px;
-}
-
-.terminal-body {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background-color: #000;
-    color: #ff00c8;
-    font-size: 16px;
-    line-height: 1.4;
+    padding: 2rem;
     text-align: center;
+    transition: transform 0.1s ease-out;
+    scroll-snap-align: center;
 }
 
-#output {
-    margin-bottom: 10px;
+.section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
-.input-line {
-    display: flex;
-    align-items: center;
+.section p, .section h2 {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 1rem;
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
 }
 
-.prompt {
-    color: #00ff00;
+.project {
+    margin-bottom: 2rem;
 }
 
-#command-input {
-    background: none;
-    border: none;
-    color: #00ff00;
-    font-family: inherit;
-    font-size: inherit;
-    outline: none;
-    flex: 1;
-    margin-left: 5px;
+.project h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.cursor {
-    color: #00ff00;
-    animation: blink 1s infinite;
+a {
+    color: #ccc;
+    text-decoration: none;
 }
 
-@keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+a:hover {
+    color: #fff;
 }
 
-.screen {
-    display: none;
-    animation: fadeIn 0.5s ease-in;
-}
 
-.screen.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.upload-button {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #333;
-    color: #00ff00;
-    border: 1px solid #00ff00;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-.upload-button:hover {
-    background-color: #00ff00;
-    color: #000;
-}
-
-pre {
-    width: 80ch;
-    margin: 0 auto;
-    text-align: left;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    line-height: inherit;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-    .terminal-body {
-        padding: 10px;
-        font-size: 14px;
+    .section h1 {
+        font-size: 2rem;
     }
-    .terminal-title {
-        font-size: 12px;
+    .section p, .section h2 {
+        font-size: 1rem;
+    }
+    .section {
+        padding: 1rem;
     }
 }

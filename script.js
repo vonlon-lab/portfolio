@@ -1,116 +1,129 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const output = document.getElementById('output');
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    const asciiArt = {
-        about: `
-██╗    ██╗ ██████╗ ██╗    ██╗ ██████╗ ██████╗ ██╗
-██║    ██║██╔═══██╗██║    ██║██╔═══██╗██╔══██╗██║
-██║ █╗ ██║██║   ██║██║ █╗ ██║██║   ██║██████╔╝██║
-██║███╗██║██║   ██║██║███╗██║██║   ██║██╔══██╗██║
-╚███╔███╔╝╚██████╔╝╚███╔███╔╝╚██████╔╝██║  ██║██║
- ╚══╝╚══╝  ╚═════╝  ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝
+let stars = [];
+const numStars = 250;
+const maxDistance = 150; // max distance for connections
 
-Hi! I'm wowori, a passionate software engineer with expertise in web development,
-machine learning, and open-source contributions. I love creating innovative solutions
-and exploring new technologies.
-        `,
-        projects: `
-██████╗ ██████╗  ██████╗      ██╗███████╗ ██████╗████████╗███████╗
-██╔══██╗██╔══██╗██╔═══██╗     ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
-██████╔╝██████╔╝██║   ██║     ██║█████╗  ██║        ██║   ███████╗
-██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║   ╚════██║
-██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║   ███████║
-╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝
-
-1. Terminal Portfolio: A unique portfolio website styled as a Linux terminal.
-        `,
-        skills: `
-███████╗██╗  ██╗██╗██╗     ██╗     ███████╗
-██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝
-███████╗█████╔╝ ██║██║     ██║     ███████╗
-╚════██║██╔═██╗ ██║██║     ██║     ╚════██║
-███████║██║  ██╗██║███████╗███████╗███████║
-╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝
-
-- Programming Languages: JavaScript, Python, Lua
-- Web Technologies: HTML, CSS, React, Node.js, Electron
-- Tools: Git, Github Desktop, Kilo Code
-- Soft Skills: Problem-solving
-        `,
-        contact: `
-██████╗ ██████╗ ███╗   ██╗████████╗ █████╗  ██████╗████████╗
-██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔════╝╚══██╔══╝
-██║     ██║   ██║██╔██╗ ██║   ██║   ███████║██║        ██║
-██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██║██║        ██║
-╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╗   ██║
-╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝   ╚═╝
-
-Email: vonlondm@inbox.ru
-GitHub: github.com/vonlon-lab
-Discord: vonlonxd
-        `,
-        unknown: `
-Command not found. Type 'help' for available commands.
-        `
-    };
-
-    function displayOutput(text) {
-        const screen = document.createElement('div');
-        screen.className = 'screen';
-        screen.innerHTML = '<pre>' + text + '</pre>';
-        output.appendChild(screen);
-        setTimeout(() => screen.classList.add('active'), 10);
-        output.scrollTop = output.scrollHeight;
+class Star {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.size = Math.random() * 2 + 1;
     }
 
-    // Display all portfolio information immediately
-    displayOutput(asciiArt.about);
-    displayOutput(asciiArt.projects);
-    displayOutput(asciiArt.skills);
-    displayOutput(asciiArt.contact);
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
 
-    // Image upload functionality
-    const imageUpload = document.getElementById('image-upload');
-    imageUpload.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    const ascii = convertImageToAscii(img);
-                    displayOutput('<pre>' + ascii + '</pre>');
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+
+    draw() {
+        ctx.shadowColor = 'white';
+        ctx.shadowBlur = 5;
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0; // reset
+    }
+}
+
+for (let i = 0; i < numStars; i++) {
+    stars.push(new Star());
+}
+
+function getTextElements() {
+    return document.querySelectorAll('.section h1, .section p, .section h2');
+}
+
+function drawConnections() {
+    const textElements = getTextElements();
+    textElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const numPoints = Math.min(el.textContent.length, 10); // up to 10 points per element
+        for (let i = 0; i < numPoints; i++) {
+            const pointX = rect.left + (rect.width / numPoints) * (i + 0.5);
+            const pointY = rect.top + rect.height / 2 + (Math.random() - 0.5) * rect.height * 0.5;
+
+            stars.forEach(star => {
+                const dist = Math.sqrt((star.x - pointX) ** 2 + (star.y - pointY) ** 2);
+                if (dist < maxDistance) {
+                    ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / maxDistance) * 0.5})`;
+                    ctx.lineWidth = 0.3;
+                    ctx.beginPath();
+                    ctx.moveTo(star.x, star.y);
+                    ctx.lineTo(pointX, pointY);
+                    ctx.stroke();
+                }
+            });
         }
     });
+}
 
-    function convertImageToAscii(img) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const width = 80; // ASCII width
-        const height = Math.floor(width * (img.height / img.width) / 2); // Adjust for aspect ratio
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-        const imageData = ctx.getImageData(0, 0, width, height);
-        const data = imageData.data;
-        let ascii = '';
-        const chars = '@%#*+=-:. '; // ASCII characters from dark to light
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                const index = (y * width + x) * 4;
-                const r = data[index];
-                const g = data[index + 1];
-                const b = data[index + 2];
-                const brightness = (r + g + b) / 3;
-                const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
-                ascii += chars[charIndex];
-            }
-            ascii += '\n';
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(star => {
+        star.update();
+        star.draw();
+    });
+
+    drawConnections();
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+// Parallax and blur on scroll
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const blurAmount = Math.min(scrollY / 1000, 5); // max blur 5px
+    canvas.style.filter = `blur(${blurAmount}px)`;
+
+    // Parallax for stars
+    stars.forEach(star => {
+        star.y += scrollY * 0.001; // slow vertical parallax
+    });
+});
+
+// Resize canvas
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+// Scramble text animation
+gsap.registerPlugin(ScrambleTextPlugin);
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.hasAttribute('data-animated')) {
+            entry.target.setAttribute('data-animated', 'true');
+            gsap.fromTo(entry.target,
+                { opacity: 0 },
+                {
+                    opacity: 1,
+                    duration: 1,
+                    scrambleText: {
+                        text: entry.target.textContent,
+                        chars: "lowerCase",
+                        speed: 0.5,
+                        revealDelay: 0.2
+                    }
+                }
+            );
         }
-        return ascii;
-    }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => {
+    observer.observe(el);
 });
