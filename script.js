@@ -86,11 +86,12 @@ animate();
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const blurAmount = Math.min(scrollY / 1000, 5); // max blur 5px
+
     canvas.style.filter = `blur(${blurAmount}px)`;
 
     // Parallax for stars
     stars.forEach(star => {
-        star.y += scrollY * 0.001; // slow vertical parallax
+        star.y -= scrollY * 0.001; // slow vertical parallax up
     });
 });
 
@@ -128,7 +129,7 @@ document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
 });
 
-// Discord hover and copy
+// Discord and email hover and copy
 const discordEl = document.querySelector('.discord');
 if (discordEl) {
     const originalText = discordEl.textContent;
@@ -141,5 +142,13 @@ if (discordEl) {
     });
     discordEl.addEventListener('click', () => {
         navigator.clipboard.writeText(nick);
+    });
+}
+
+const emailEl = document.querySelector('.email');
+if (emailEl) {
+    const email = emailEl.dataset.email;
+    emailEl.addEventListener('click', () => {
+        navigator.clipboard.writeText(email);
     });
 }
