@@ -130,7 +130,9 @@ body {
 }
 
 pre {
-    text-align: center;
+    width: 80ch;
+    margin: 0 auto;
+    text-align: left;
     font-family: inherit;
     font-size: inherit;
     color: inherit;
