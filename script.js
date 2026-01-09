@@ -127,3 +127,19 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
 });
+
+// Discord hover and copy
+const discordEl = document.querySelector('.discord');
+if (discordEl) {
+    const originalText = discordEl.textContent;
+    const nick = discordEl.dataset.nick;
+    discordEl.addEventListener('mouseenter', () => {
+        discordEl.textContent = nick;
+    });
+    discordEl.addEventListener('mouseleave', () => {
+        discordEl.textContent = originalText;
+    });
+    discordEl.addEventListener('click', () => {
+        navigator.clipboard.writeText(nick);
+    });
+}
