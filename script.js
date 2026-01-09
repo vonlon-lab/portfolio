@@ -4,15 +4,16 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let stars = [];
-const numStars = 250;
+const numStars = 350;
 const maxDistance = 150; // max distance for connections
+let mouseX = 0, mouseY = 0;
 
 class Star {
     constructor() {
         this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
+        this.y = Math.random() * canvas.height * 1.2;
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
         this.size = Math.random() * 2 + 1;
     }
 
@@ -25,13 +26,19 @@ class Star {
     }
 
     draw() {
+        const distToMouse = Math.sqrt((this.x - mouseX) ** 2 + (this.y - mouseY) ** 2);
+        const maxDist = 200; // radius of influence
+        const brightness = Math.max(0.2, 1 - distToMouse / maxDist); // min 0.2, max 1
+
         ctx.shadowColor = 'white';
         ctx.shadowBlur = 5;
+        ctx.globalAlpha = brightness;
         ctx.fillStyle = 'white';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
-        ctx.shadowBlur = 0; // reset
+        ctx.globalAlpha = 1; // reset
+        ctx.shadowBlur = 0;
     }
 }
 
@@ -40,7 +47,11 @@ for (let i = 0; i < numStars; i++) {
 }
 
 function getTextElements() {
-    return document.querySelectorAll('.section h1, .section p, .section h2');
+    return document.querySelectorAll('.section h1, .section p, .section h2, .hero-title');
+}
+
+function getHeroElements() {
+    return document.querySelectorAll('.avatar');
 }
 
 function drawConnections() {
@@ -56,7 +67,7 @@ function drawConnections() {
                 const dist = Math.sqrt((star.x - pointX) ** 2 + (star.y - pointY) ** 2);
                 if (dist < maxDistance) {
                     ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / maxDistance) * 0.5})`;
-                    ctx.lineWidth = 0.3;
+                    ctx.lineWidth = 0.6;
                     ctx.beginPath();
                     ctx.moveTo(star.x, star.y);
                     ctx.lineTo(pointX, pointY);
@@ -64,6 +75,41 @@ function drawConnections() {
                 }
             });
         }
+    });
+
+    // Connections to avatar
+    const heroElements = getHeroElements();
+    heroElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        stars.forEach(star => {
+            const dist = Math.sqrt((star.x - centerX) ** 2 + (star.y - centerY) ** 2);
+            if (dist < maxDistance) {
+                ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / maxDistance) * 0.5})`;
+                ctx.lineWidth = 0.6;
+                ctx.beginPath();
+                ctx.moveTo(star.x, star.y);
+                ctx.lineTo(centerX, centerY);
+                ctx.stroke();
+            }
+        });
+    });
+
+    // Connections between stars
+    stars.forEach((star, i) => {
+        stars.slice(i + 1).forEach(otherStar => {
+            const dist = Math.sqrt((star.x - otherStar.x) ** 2 + (star.y - otherStar.y) ** 2);
+            if (dist < 160) {
+                ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / 80) * 0.3})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(star.x, star.y);
+                ctx.lineTo(otherStar.x, otherStar.y);
+                ctx.stroke();
+            }
+        });
     });
 }
 
@@ -83,16 +129,25 @@ function animate() {
 animate();
 
 // Parallax and blur on scroll
+let prevScrollY = 0;
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
+    const deltaY = scrollY - prevScrollY;
+    prevScrollY = scrollY;
     const blurAmount = Math.min(scrollY / 1000, 5); // max blur 5px
 
     canvas.style.filter = `blur(${blurAmount}px)`;
 
     // Parallax for stars
     stars.forEach(star => {
-        star.y -= scrollY * 0.001; // slow vertical parallax up
+        star.y -= deltaY * 0.1; // consistent speed parallax
     });
+});
+
+// Mouse tracking
+window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
 });
 
 // Resize canvas
