@@ -106,8 +106,6 @@ body {
     margin-bottom: 0.5rem;
 }
 
-
-
 a {
     color: #ccc;
     text-decoration: none;
@@ -116,8 +114,6 @@ a {
 a:hover {
     color: #fff;
 }
-
-
 
 @media (max-width: 768px) {
     .hero-content {
