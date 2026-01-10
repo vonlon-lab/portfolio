@@ -39,8 +39,9 @@ body {
 
 .hero-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .avatar {
@@ -49,12 +50,25 @@ body {
     border-radius: 50%;
     border: 3px solid #fff;
     box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.3);
+    margin-top: 0.5rem;
+}
+
+.hero-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.hero-link:hover {
+    opacity: 0.8;
 }
 
 .hero-title {
     font-size: 4rem;
     text-shadow: 0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.5);
+    margin-bottom: 0.5rem;
 }
+
 
 .section h1 {
     font-size: 4.5rem;
@@ -63,8 +77,12 @@ body {
     text-shadow: 0 0 24px rgba(255,255,255,0.5);
 }
 
-.section p, .section h2, .section h3, .section ul {
-    font-size: 1.2rem;
+.section h3 {
+    font-size: 5.2rem;
+}
+
+.section p, .section h2, .section ul {
+    font-size: 1.4rem;
     max-width: 600px;
     margin: 0 auto 1rem;
     text-shadow: 0 0 5px rgba(255,255,255,0.3);
@@ -84,9 +102,11 @@ body {
 }
 
 .project h2 {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
 }
+
+
 
 a {
     color: #ccc;
@@ -97,15 +117,6 @@ a:hover {
     color: #fff;
 }
 
-.discord, .email {
-    cursor: pointer;
-    color: #ccc;
-    transition: color 0.3s ease;
-}
-
-.discord:hover, .email:hover {
-    color: #fff;
-}
 
 
 @media (max-width: 768px) {

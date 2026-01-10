@@ -161,7 +161,7 @@ gsap.registerPlugin(ScrambleTextPlugin);
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.hasAttribute('data-animated')) {
+        if (entry.isIntersecting && !entry.target.hasAttribute('data-animated') && !entry.target.classList.contains('discord') && !entry.target.classList.contains('email')) {
             entry.target.setAttribute('data-animated', 'true');
             gsap.fromTo(entry.target,
                 { opacity: 0 },
@@ -176,6 +176,9 @@ const observer = new IntersectionObserver((entries) => {
                     }
                 }
             );
+        } else if (entry.isIntersecting && !entry.target.hasAttribute('data-animated')) {
+            entry.target.setAttribute('data-animated', 'true');
+            gsap.fromTo(entry.target, { opacity: 0 }, { opacity: 1, duration: 1 });
         }
     });
 }, { threshold: 0.1 });
@@ -183,27 +186,3 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
 });
-
-// Discord and email hover and copy
-const discordEl = document.querySelector('.discord');
-if (discordEl) {
-    const originalText = discordEl.textContent;
-    const nick = discordEl.dataset.nick;
-    discordEl.addEventListener('mouseenter', () => {
-        discordEl.textContent = nick;
-    });
-    discordEl.addEventListener('mouseleave', () => {
-        discordEl.textContent = originalText;
-    });
-    discordEl.addEventListener('click', () => {
-        navigator.clipboard.writeText(nick);
-    });
-}
-
-const emailEl = document.querySelector('.email');
-if (emailEl) {
-    const email = emailEl.dataset.email;
-    emailEl.addEventListener('click', () => {
-        navigator.clipboard.writeText(email);
-    });
-}
