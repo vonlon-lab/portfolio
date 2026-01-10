@@ -62,11 +62,20 @@ body {
     text-shadow: 0 0 24px rgba(255,255,255,0.5);
 }
 
-.section p, .section h2 {
+.section p, .section h2, .section ul {
     font-size: 1.2rem;
     max-width: 600px;
     margin: 0 auto 1rem;
     text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+.section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.section li {
+    margin-bottom: 0.5rem;
 }
 
 .project {
